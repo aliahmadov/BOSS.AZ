@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -69,12 +70,20 @@ Phone: {Phone}");
         public int CvCount { get; set; } = 0;
         public void ShowCVs()
         {
-            Console.WriteLine($"\nName : {Name}");
-            Console.WriteLine($"Surname: {Surname}");
-            Console.WriteLine();
-            for (int i = 0; i < CvCount; i++)
+            if (CVs.Count != 0)
             {
-                CVs[i].Show();
+
+                Console.WriteLine($"\nName : {Name}");
+                Console.WriteLine($"Surname: {Surname}");
+                Console.WriteLine();
+                for (int i = 0; i < CvCount; i++)
+                {
+                    CVs[i].Show();
+                }
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red; Console.WriteLine("You do not have any CV yet"); Console.ResetColor();
             }
         }
 
@@ -244,15 +253,6 @@ End work date : {EndDate.ToShortDateString()}
             }
             return null;
         }
-        public void RemoveApplier(int id)
-        {
-            var applier = GetApplierByID(id);
-
-            if (applier != null)
-            {
-                Appliers.Remove(applier);
-            }
-        }
         public Vacancy()
         {
             BeginTime = DateTime.Now;
@@ -271,6 +271,8 @@ End work date : {EndDate.ToShortDateString()}
         {
             Console.WriteLine($@"
 Vacancy ID : {Id}
+
+City : {City}
 
 {Category} / {Position} 
 
@@ -303,6 +305,8 @@ About Work:
 {AboutWork}                                
 Requirements: 
 {Requirements}
+=====================================================================================
+
 ");
         }
 
@@ -450,7 +454,22 @@ Requirements:
             Employers.Add(employer);
         }
 
-        public void AddNotificationToEmployer(Notification notification,int vacancy_id)
+        public Human GetHuman(string username, string password)
+        {
+            var employer = GetEmployerByData(username, password);
+            var worker = GetWorkerByData(username, password);
+
+            if (employer != null)
+            {
+                return employer;
+            }
+            else if (worker != null)
+            {
+                return worker;
+            }
+            else return null;
+        }
+        public void AddNotificationToEmployer(Notification notification, int vacancy_id)
         {
             for (int i = 0; i < Employers.Count; i++)
             {
@@ -491,20 +510,6 @@ Requirements:
             }
 
         }
-        //public void RemoveApplier(Applier applier, int vacancy_id)
-        //{
-        //    int index=GetIndexOfApplier(applier.Id);
-        //    for (int i = 0; i < Employers.Count; i++)
-        //    {
-        //        for (int k = 0; k < Employers[i].Vacancies.Count; k++)
-        //        {
-        //            if (Employers[i].Vacancies[k].Id == vacancy_id)
-        //            {
-        //                Employers[i].Vacancies[k].Appliers.RemoveAt(index);
-        //            }
-        //        }
-        //    }
-        //}
         public void AddApplierToEmployer(Applier applier, int ad_id)
         {
             for (int i = 0; i < Employers.Count; i++)
@@ -572,7 +577,7 @@ Requirements:
         {
             for (int i = 0; i < Employers.Count; i++)
             {
-                if (Employers[i].Username == username || Employers[i].Password == password)
+                if (Employers[i].Username == username && Employers[i].Password == password)
                 {
                     return true;
                 }
@@ -640,113 +645,18 @@ Requirements:
             return null;
         }
 
-    }
-
-
-    class Globals
-    {
-        public static string[] specialities = new string[10] {"Finance","Marketing","IT/Programming Field","Sale","Desing","Law",
-        "Education/Schooling","Engineering","Service","Medical"};
-        public static string[][] categories = new string[10][]
+        public List<Vacancy> GetVacanciesList()
         {
-            new string[8]{"Credit Specialist","Insurance","Audit","Accountant","Finance Analysis","Bank Service","Cashier","Economist"},
-            new string[4]{ "Marketing Management", "Corporate Communications","Advertising","Corporating"},
-            new string[6]{"System Management","Database Control","IT Specialist/Advisor","Programming","IT Project Management","Hardware Specialist"},
-            new string[2]{"Real Estate Agent","Sale Specialist"},
-            new string[3]{"Web Design","Artist","Fashion Design"},
-            new string[3]{"Advocate","Law Advisor","Crime Investigation"},
-            new string[4]{"Tutor","Language Specialist","Special Education","Schooling"},
-            new string[4]{"Agriculture","Automated Machinery Control","Engineering","Construction"},
-            new string[9]{"WarehouseMan","Janitor","Restaurant Job","Driver","BabySitter","Laboring","Translator","Courier","Security Agent"},
-            new string[2]{"Doctor","Medical Advisor"}
-        };
-
-        public static Worker worker1 = new Worker()
-        {
-            Name = "Ali",
-            Surname = "Ahmadov",
-            Age = 20,
-            City = "Baku",
-            Phone = "050-311-72-66",
-            Username = "user",
-            Password = "user"
-        };
-
-        public static Worker worker2 = new Worker()
-        {
-            Name = "John",
-            Surname = "Wick",
-            Age = 20,
-            City = "Sumqayit",
-            Phone = "070-310-23-11",
-            Username = "user1",
-            Password = "user1"
-        };
-
-        public static Employer employer1 = new Employer()
-        {
-            Name = "John",
-            Surname = "Wick",
-            Age = 25,
-            Phone = "050-432-45-32",
-            City = "Baku",
-            Username = "admin",
-            Password = "admin",
-
-        };
-
-
-        public static CV worker1_CV = new CV()
-        {
-            School = "Zangi Liceum",
-            Speciality = "Programmer",
-            UniScore = "653",
-            HasCertificate = true,
-            BeginDate = new DateTime(2015, 1, 1),
-            EndDate = new DateTime(2018, 5, 5)
-        };
-
-        public static Vacancy vacancy = new Vacancy()
-        {
-            AboutWork = $@"
-    We are looking for an experienced Strategy Manager. You will work directly with C-suite level executives to ensure that daily objectives, reports, and metrics align directly with the company’s goals.
-
-    Evaluate new business models and corporate relationships.
-    Negotiate complex business models, partnerships, transactions, and other commercial agreements.
-    Identify and target attainable opportunities in the market.
-    Clearly define company goals and long-term strategy.
-    Examine the profitability of each product, store location, and line of business in order to redirect resources.
-    Utilize skills in project management to lead large teams in change processes.
-    Develop methods for motivating and inspiring stakeholders.
-    Leverage professional networks to attain critical resources.
-    Provide training materials for process owners who need support.
-
-",
-            Requirements = $@"
-
-    Experience in strategic planning and business analytics.
-    Ability to lead, inspire and motivate teams.
-    Strong presentation and negotiation skills.
-    Excellent verbal and written communication in [X] language.
-    [X] degree in Business Administration or relevant fields.
-",
-            City = "Baku",
-            CompanyName = "Game Developer X",
-            Education = "Bachelor, Master",
-            Email = "aahmadov7626@ada.edu.az",
-            MinAge = "20",
-            MaxAge = "30",
-            MinSalary = "2000",
-            MaxSalary = "3500",
-            Category = "Front End Developer",
-            ExperienceDuration = "3",
-            Phones = "050-311-11-11",
-            Position = "Head Manager"
-
-        };
-
-        public static DataBase dataBase = new DataBase();
-
+            List<Vacancy> vacancies = new List<Vacancy>();
+            for (int i = 0; i < Employers.Count; i++)
+            {
+                for (int k = 0; k < Employers[i].Vacancies.Count; k++)
+                {
+                    vacancies.Add(Employers[i].Vacancies[k]);
+                }
+            }
+            return vacancies;
+        }
     }
 
 
@@ -764,385 +674,380 @@ Requirements:
 
 
             Globals.employer1.AddVacancy(Globals.vacancy);
+            Globals.employer2.AddVacancy(Globals.vacancy1);
+            Globals.employer2.AddVacancy(Globals.vacancy2);
+            Globals.employer1.AddVacancy(Globals.vacancy3);
 
+
+            Globals.dataBase.AddEmployer(Globals.employer2);
             Globals.dataBase.AddEmployer(Globals.employer1);
+
             Globals.dataBase.AddWorker(Globals.worker1);
             Globals.dataBase.AddWorker(Globals.worker2);
-
-
         }
 
         public void Start()
         {
-            //Globals.worker1.ShowCVs();
-            //Globals.employer1.ShowVacanciesDetailed();
 
-           
             while (true)
             {
                 Console.Clear();
-                Helper.ShowMenu();
-                Console.WriteLine("Enter your select: ");
-                string select = Console.ReadLine();
+                Console.WriteLine("Enter username: ");
+                string username = Console.ReadLine();
+                Console.WriteLine("Enter password: ");
+                string password = Console.ReadLine();
 
-                if (select == "1")
+                Human human = Globals.dataBase.GetHuman(username, password);
+
+                if (human is Employer)
                 {
                     //Admin
-                    while (true)
+
+
+                    Console.Clear();
+                    Globals.dataBase = FileHelper.DeserializeDatabase(ref Globals.dataBase);
+                    if (Globals.dataBase.IsEmployerExist(username, password))
                     {
-
-                        Console.Clear();
-                        Console.WriteLine("Enter username: ");
-                        string username = Console.ReadLine();
-                        Console.WriteLine("Enter password: ");
-                        string password = Console.ReadLine();
-                        Globals.dataBase = FileHelper.DeserializeDatabase(ref Globals.dataBase);
-                        if (Globals.dataBase.IsEmployerExist(username, password))
+                        var currentAdmin = Globals.dataBase.GetEmployerByData(username, password);
+                        while (true)
                         {
-                            var currentAdmin = Globals.dataBase.GetEmployerByData(username, password);
-                            while (true)
+                            Console.Clear();
+                            Helper.ShowAdminMenu();
+                            Console.WriteLine("Enter the option: ");
+                            string admin_option = Console.ReadLine();
+
+                            if (admin_option == "1")
                             {
+                                //Place new announcement
+                                Console.WriteLine("Enter email: ");
+                                string email = Console.ReadLine();
+                                Console.WriteLine("Enter the phone numbers: ");
+                                string phone = Console.ReadLine();
+                                Helper.ShowCategories(Globals.categories, Globals.specialities);
+                                Console.WriteLine("Choose category/Enter its name: ");
+                                string category = Console.ReadLine();
+                                Console.WriteLine("Enter the position: ");
+                                string position = Console.ReadLine();
+                                Console.WriteLine("Choose one city/Enter its name: ");
+                                string city = Console.ReadLine();
+                                Console.WriteLine("Min salary: ");
+                                string min_salary = Console.ReadLine();
+                                Console.WriteLine("Max salary: ");
+                                string max_salary = Console.ReadLine();
+                                Console.WriteLine("Min age: ");
+                                string min_age = Console.ReadLine();
+                                Console.WriteLine("Max age: ");
+                                string max_age = Console.ReadLine();
+                                Console.WriteLine("Education level: ");
+                                string education_level = Console.ReadLine();
+                                Console.WriteLine("Experience duration requirement: ");
+                                string ex_req = Console.ReadLine();
+                                Console.WriteLine("Requirements: ");
+                                string reqs = Console.ReadLine();
+                                Console.WriteLine("About Work/Description: ");
+                                string description = Console.ReadLine();
+                                Console.WriteLine("Company Name: ");
+                                string company_Name = Console.ReadLine();
 
+                                Vacancy new_vacancy = new Vacancy()
+                                {
+                                    AboutWork = description,
+                                    Category = category,
+                                    City = city,
+                                    Education = education_level,
+                                    ExperienceDuration = ex_req,
+                                    MinAge = min_age,
+                                    MaxAge = max_age,
+                                    MinSalary = min_salary,
+                                    MaxSalary = max_salary,
+                                    Email = email,
+                                    Phones = phone,
+                                    Position = position,
+                                    CompanyName = company_Name,
+                                    Requirements = reqs
+                                };
+
+                                currentAdmin.AddVacancy(new_vacancy);
+                                Console.ForegroundColor = ConsoleColor.Green; Console.WriteLine($"Dear {currentAdmin.Name}, new vacancy has been added successfully to your portfolio."); Console.ResetColor();
+                                Console.ReadKey();
+                                FileHelper.SerializeDatabase(Globals.dataBase);
+                            }
+                            else if (admin_option == "2")
+                            {
+                                //Take a look at ads
                                 Console.Clear();
-                                Helper.ShowAdminMenu();
-                                Console.WriteLine("Enter the option: ");
-                                string admin_option = Console.ReadLine();
+                                currentAdmin.ShowVacanciesDetailed();
+                                Console.ReadKey();
+                            }
+                            else if (admin_option == "3")
+                            {
+                                //Observe appliers
+                                Console.Clear();
+                                currentAdmin.ShowSimpleVacancies();
+                                Console.WriteLine("Enter ID: ");
+                                string id = Console.ReadLine();
 
-                                if (admin_option == "1")
+                                currentAdmin.ShowAppliers(Convert.ToInt32(id));
+                                var vacancy = Globals.dataBase.GetVacancyByID(Convert.ToInt32(id));
+
+                                if (vacancy.Appliers.Count != 0)
                                 {
-                                    //Place new announcement
-                                    Console.WriteLine("Enter email: ");
-                                    string email = Console.ReadLine();
-                                    Console.WriteLine("Enter the phone numbers: ");
-                                    string phone = Console.ReadLine();
-                                    Helper.ShowCategories(Globals.categories, Globals.specialities);
-                                    Console.WriteLine("Choose category/Enter its name: ");
-                                    string category = Console.ReadLine();
-                                    Console.WriteLine("Enter the position: ");
-                                    string position = Console.ReadLine();
-                                    Console.WriteLine("Choose one city/Enter its name: ");
-                                    string city = Console.ReadLine();
-                                    Console.WriteLine("Min salary: ");
-                                    string min_salary = Console.ReadLine();
-                                    Console.WriteLine("Max salary: ");
-                                    string max_salary = Console.ReadLine();
-                                    Console.WriteLine("Min age: ");
-                                    string min_age = Console.ReadLine();
-                                    Console.WriteLine("Max age: ");
-                                    string max_age = Console.ReadLine();
-                                    Console.WriteLine("Education level: ");
-                                    string education_level = Console.ReadLine();
-                                    Console.WriteLine("Experience duration requirement: ");
-                                    string ex_req = Console.ReadLine();
-                                    Console.WriteLine("Requirements: ");
-                                    string reqs = Console.ReadLine();
-                                    Console.WriteLine("About Work/Description: ");
-                                    string description = Console.ReadLine();
-                                    Console.WriteLine("Company Name: ");
-                                    string company_Name = Console.ReadLine();
 
-                                    Vacancy new_vacancy = new Vacancy()
+                                    while (true)
                                     {
-                                        AboutWork = description,
-                                        Category = category,
-                                        City = city,
-                                        Education = education_level,
-                                        ExperienceDuration = ex_req,
-                                        MinAge = min_age,
-                                        MaxAge = max_age,
-                                        MinSalary = min_salary,
-                                        MaxSalary = max_salary,
-                                        Email = email,
-                                        Phones = phone,
-                                        Position = position,
-                                        CompanyName = company_Name,
-                                        Requirements = reqs
-                                    };
-
-                                    currentAdmin.AddVacancy(new_vacancy);
-                                    Console.ForegroundColor = ConsoleColor.Green; Console.WriteLine($"Dear {currentAdmin.Name}, new vacancy has been added successfully to your portfolio."); Console.ResetColor();
-                                    Console.ReadKey();
-                                    FileHelper.SerializeDatabase(Globals.dataBase);
-                                }
-                                else if (admin_option == "2")
-                                {
-                                    //Take a look at ads
-                                    Console.Clear();
-                                    currentAdmin.ShowVacanciesDetailed();
-                                    Console.ReadKey();
-                                }
-                                else if (admin_option == "3")
-                                {
-                                    //Observe appliers
-                                    Console.Clear();
-                                    currentAdmin.ShowSimpleVacancies();
-                                    Console.WriteLine("Enter ID: ");
-                                    string id = Console.ReadLine();
-
-                                    currentAdmin.ShowAppliers(Convert.ToInt32(id));
-                                    var vacancy = Globals.dataBase.GetVacancyByID(Convert.ToInt32(id));
-
-                                    if (vacancy.Appliers.Count != 0)
-                                    {
-
-                                        while (true)
+                                        Console.WriteLine("Enter applier ID for detailed view: ");
+                                        string app_id = Console.ReadLine();
+                                        var applier = Globals.dataBase.GetApplierByID(Convert.ToInt32(app_id));
+                                        if (applier == null) throw new NotFoundApplierByIDException();
+                                        Console.Clear();
+                                        applier.ShowApplier();
+                                        applier.Cv.Show();
+                                        Console.WriteLine("For acceptance - 1\nFor rejection - 2\nGo Back - 0 : ");
+                                        string selection = Console.ReadLine();
+                                        if (selection == "1")
                                         {
-                                            Console.WriteLine("Enter applier ID for detailed view: ");
-                                            string app_id = Console.ReadLine();
-                                            var applier = Globals.dataBase.GetApplierByID(Convert.ToInt32(app_id));
-                                            if (applier == null) throw new NotFoundApplierByIDException();
-                                            Console.Clear();
-                                            applier.ShowApplier();
-                                            applier.Cv.Show();
-                                            Console.WriteLine("For acceptance - 1\nFor rejection - 2\nGo Back - 0 : ");
-                                            string selection = Console.ReadLine();
-                                            if (selection == "1")
-                                            {
-                                                Console.ForegroundColor = ConsoleColor.Green; Console.WriteLine($"Applier ({applier.worker.Name}) with ID {applier.Id} has successfully been accepted"); Console.ResetColor();
-                                                Notification notification = new Notification() { Message = $"Good News - You have been accepted for advertisement with ID {vacancy.Id} by employer {currentAdmin.Name} !!!" };
-                                                Globals.dataBase.AddNotificationToWorker(notification, applier.worker.Id);
-                                                Globals.dataBase.RemoveApplier(applier.Id);
-                                                FileHelper.SerializeDatabase(Globals.dataBase);
-                                            }
-                                            else if (selection == "2")
-                                            {
-                                                Console.ForegroundColor = ConsoleColor.Red; Console.WriteLine($"Applier ({applier.worker.Name}) with ID {applier.Id} has successfully been rejected"); Console.ResetColor();
-                                                Notification notification = new Notification() { Message = $"Sad News - You have been rejected for advertisement with ID {vacancy.Id} by employer {currentAdmin.Name} !!!" };
-                                                Globals.dataBase.AddNotificationToWorker(notification, applier.worker.Id);
-                                                Globals.dataBase.RemoveApplier(applier.Id);
-                                                FileHelper.SerializeDatabase(Globals.dataBase);
-                                            }
-                                            else if (selection == "0") break;
-                                            else
-                                            {
-                                                throw new WrongInputException();
-                                            }
+                                            Console.ForegroundColor = ConsoleColor.Green; Console.WriteLine($"Applier ({applier.worker.Name}) with ID {applier.Id} has successfully been accepted"); Console.ResetColor();
+                                            Notification notification = new Notification() { Message = $"Good News - You have been accepted for advertisement with ID {vacancy.Id} by employer {currentAdmin.Name} !!!" };
+                                            Globals.dataBase.AddNotificationToWorker(notification, applier.worker.Id);
+                                            Globals.dataBase.RemoveApplier(applier.Id);
+                                            FileHelper.SerializeDatabase(Globals.dataBase);
+                                        }
+                                        else if (selection == "2")
+                                        {
+                                            Console.ForegroundColor = ConsoleColor.Red; Console.WriteLine($"Applier ({applier.worker.Name}) with ID {applier.Id} has successfully been rejected"); Console.ResetColor();
+                                            Notification notification = new Notification() { Message = $"Sad News - You have been rejected for advertisement with ID {vacancy.Id} by employer {currentAdmin.Name} !!!" };
+                                            Globals.dataBase.AddNotificationToWorker(notification, applier.worker.Id);
+                                            Globals.dataBase.RemoveApplier(applier.Id);
+                                            FileHelper.SerializeDatabase(Globals.dataBase);
+                                        }
+                                        else if (selection == "0") break;
+                                        else
+                                        {
+                                            throw new WrongInputException();
                                         }
                                     }
-                                    Console.ReadKey();
-
                                 }
-                                else if (admin_option == "4")
-                                {
-                                    Console.Clear();
-                                    currentAdmin.ShowNotifications();
-                                    Console.ReadKey();
-                                }
-                                else if (admin_option == "0")
-                                {
-                                    break;
-                                }
-                                else
-                                {
-                                    throw new WrongInputException();
-                                }
+                                Console.ReadKey();
 
                             }
+                            else if (admin_option == "4")
+                            {
+                                Console.Clear();
+                                currentAdmin.ShowNotifications();
+                                Console.ReadKey();
+                            }
+                            else if (admin_option == "0")
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                throw new WrongInputException();
+                            }
+
                         }
-                        else
-                        {
-                            throw new UsernameOrPasswordWrong();
-                        }
+                    }
+                    else
+                    {
+                        throw new UsernameOrPasswordWrong();
                     }
                 }
 
-                else if (select == "2")
+
+                else if (human is Worker)
                 {
                     //User
                     while (true)
                     {
-                        Console.Clear();
-                        Console.WriteLine("Enter username: ");
-                        string username = Console.ReadLine();
-                        Console.WriteLine("Enter password: ");
-                        string password = Console.ReadLine();
 
                         var currentUser = Globals.dataBase.GetWorkerByData(username, password);
-                        if (username == "" || password == "") break;
-                        if (currentUser != null)
+                        if (Globals.dataBase.IsWorkerExist(username, password))
                         {
-                            while (true)
+
+                            Console.Clear();
+                            Helper.ShowUserMenu();
+                            Console.WriteLine("Enter the option: ");
+                            string user_option = Console.ReadLine();
+
+                            if (user_option == "1")
                             {
-                                Console.Clear();
-                                Helper.ShowUserMenu();
-                                Console.WriteLine("Enter the option: ");
-                                string user_option = Console.ReadLine();
+                                //Show Ads
+                                Globals.dataBase.ShowAllAds();
+                                // Console.ReadKey();
 
-                                if (user_option == "1")
+                                Helper.FilterProcess();
+
+                                Console.WriteLine("Look detailed by Vacancy ID(Enter ID / Go back 0): ");
+                                string vacancy_id = Console.ReadLine();
+                                if (vacancy_id == "0") break;
+                                bool hasParsed = int.TryParse(vacancy_id, out int result);
+                                if (hasParsed)
                                 {
-                                    //Show Ads
-                                    Console.Clear();
-                                    Globals.dataBase.ShowAllAds();
-                                    // Console.ReadKey();
+                                    var vacancy = Globals.dataBase.GetVacancyByID(result);
 
-                                    Console.WriteLine("Look detailed by Vacancy ID(Enter ID / Go back 0): ");
-                                    string vacancy_id = Console.ReadLine();
-                                    if (vacancy_id == "0") break;
-                                    bool hasParsed = int.TryParse(vacancy_id, out int result);
-                                    if (hasParsed)
+                                    if (vacancy != null)
                                     {
-                                        var vacancy = Globals.dataBase.GetVacancyByID(result);
-
-                                        if (vacancy != null)
-                                        {
-                                            Console.Clear();
-                                            vacancy.ShowVacancyDetailed();
-                                            Console.ReadKey();
-                                        }
-                                        else
-                                        {
-                                            throw new NotFoundVacancyByIDException();
-                                        }
+                                        Console.Clear();
+                                        vacancy.ShowVacancyDetailed();
+                                        Console.ReadKey();
                                     }
                                     else
                                     {
-                                        throw new SystemCorruptionException();
+                                        throw new NotFoundVacancyByIDException();
                                     }
-
-                                }
-                                else if (user_option == "2")
-                                {
-                                    //Bid any ad
-
-                                    Console.Clear();
-                                    Globals.dataBase.ShowAllAds();
-
-                                    Console.WriteLine("Enter ID: ");
-                                    string ad_id = Console.ReadLine();
-                                    bool hasParsed = int.TryParse(ad_id, out int result);
-                                    if (hasParsed)
-                                    {
-                                        var ad = Globals.dataBase.GetVacancyByID(result);
-                                        if (ad != null)
-                                        {
-                                            Console.Clear();
-                                            currentUser.ShowCVs();
-                                            CV worker_CV = new CV();
-                                            Console.WriteLine("Which CV ? Enter ID: ");
-                                            string id = Console.ReadLine();
-                                            bool IdParsed = int.TryParse(id, out int id_result);
-                                            if (IdParsed)
-                                            {
-                                                var Cv = Globals.dataBase.GetCVByID(id_result);
-                                                if (Cv == null) throw new NotFoundCVByIDException();
-                                                worker_CV = Cv;
-                                            }
-                                            else throw new SystemCorruptionException();
-
-                                            Applier applier = new Applier() { worker = currentUser, Cv = worker_CV };
-
-                                            
-                                            Globals.dataBase.AddApplierToEmployer(applier, Convert.ToInt32(ad_id));
-
-                                            Console.ForegroundColor = ConsoleColor.Green;
-                                            Console.WriteLine($"Successfully applied to ad with ID {ad.Id}");
-                                            Console.ResetColor();
-                                            Console.ReadKey();
-
-                                            Notification notification = new Notification() { Message = $"{currentUser.Name} with ID {currentUser.Id} has applied to your add with ID {ad_id}" };
-                                            Globals.dataBase.AddNotificationToEmployer(notification, Convert.ToInt32(ad_id));
-                                            FileHelper.SerializeDatabase(Globals.dataBase);
-                                        }
-                                        else
-                                        {
-                                            throw new NotFoundVacancyByIDException();
-                                        }
-                                    }
-                                    else
-                                    {
-                                        throw new SystemCorruptionException();
-                                    }
-
-                                }
-                                else if (user_option == "3")
-                                {
-                                    //Show CVs
-                                    currentUser.ShowCVs();
-                                    Console.ReadKey();
-                                }
-                                else if (user_option == "4")
-                                {
-                                    //Create new CV
-                                    CV newCV = new CV();
-                                    Console.WriteLine("Enter speciality : ");
-                                    string speciality = Console.ReadLine();
-                                    Console.WriteLine("Enter school : ");
-                                    string school = Console.ReadLine();
-                                    Console.WriteLine("Enter university score: ");
-                                    string score = Console.ReadLine();
-
-                                    while (true)
-                                    {
-                                        Console.Clear();
-                                        Console.WriteLine("Enter language and proficiency level / Enter 0 if you done: ");
-                                        string language = Console.ReadLine();
-                                        if (language == "0") break;
-                                        newCV.AddLanguage(language);
-                                    }
-                                    while (true)
-                                    {
-                                        Console.Clear();
-                                        Console.WriteLine("Enter companies you cooperated with / Enter 0 if you done: ");
-                                        string company = Console.ReadLine();
-                                        if (company == "0") break;
-                                        newCV.AddCompany(company);
-                                    }
-
-                                    while (true)
-                                    {
-                                        Console.Clear();
-                                        Console.WriteLine("Enter skills / Enter 0 if you done: ");
-                                        string skill = Console.ReadLine();
-                                        if (skill == "0") break;
-                                        newCV.AddSkill(skill);
-                                    }
-
-                                    while (true)
-                                    {
-                                        Console.Clear();
-                                        Console.WriteLine("Enter links / Enter 0 if you done: ");
-                                        string link = Console.ReadLine();
-                                        if (link == "0") break;
-                                        newCV.AddLink(link);
-                                    }
-                                    Console.Clear();
-                                    Console.WriteLine("Enter start working day / month / year : ");
-                                    string day = Console.ReadLine();
-                                    string month = Console.ReadLine();
-                                    string year = Console.ReadLine();
-
-                                    Console.WriteLine("Enter end working day / month / year : ");
-                                    string day1 = Console.ReadLine();
-                                    string month1 = Console.ReadLine();
-                                    string year1 = Console.ReadLine();
-
-                                    DateTime dateTime_start = new DateTime(Convert.ToInt32(year), Convert.ToInt32(month), Convert.ToInt32(day));
-                                    DateTime dateTime_end = new DateTime(Convert.ToInt32(year1), Convert.ToInt32(month1), Convert.ToInt32(day1));
-
-                                    newCV.BeginDate = dateTime_start;
-                                    newCV.EndDate = dateTime_end; newCV.School = school; newCV.UniScore = score; newCV.Speciality = speciality;
-                                    currentUser.AddCV(newCV);
-                                    Console.WriteLine();
-                                    Console.ForegroundColor = ConsoleColor.Green; Console.WriteLine("CV has been successfully created !!!"); Console.ResetColor();
-                                    Console.ReadKey();
-
-                                }
-                                else if (user_option == "5")
-                                {
-                                    Console.Clear();
-                                    currentUser.ShowNotifications();
-                                    Console.ReadKey();
-                                }
-                                else if (user_option == "0")
-                                {
-                                    break;
                                 }
                                 else
                                 {
-                                    throw new WrongInputException();
+                                    throw new SystemCorruptionException();
                                 }
+
+                            }
+
+                            else if (user_option == "2")
+                            {
+                                //Bid any ad
+                                if (currentUser.CVs.Count == 0) throw new CVMustBeFulfilledException();
+                                Console.Clear();
+                                Globals.dataBase.ShowAllAds();
+                                Helper.FilterProcess();
+                                Console.WriteLine("Enter ID: ");
+                                string ad_id = Console.ReadLine();
+                                bool hasParsed = int.TryParse(ad_id, out int result);
+                                if (hasParsed)
+                                {
+                                    var ad = Globals.dataBase.GetVacancyByID(result);
+                                    if (ad != null)
+                                    {
+                                        Console.Clear();
+                                        currentUser.ShowCVs();
+                                        CV worker_CV = new CV();
+                                        Console.WriteLine("Which CV ? Enter ID: ");
+                                        string id = Console.ReadLine();
+                                        bool IdParsed = int.TryParse(id, out int id_result);
+                                        if (IdParsed)
+                                        {
+                                            var Cv = Globals.dataBase.GetCVByID(id_result);
+                                            if (Cv == null) throw new NotFoundCVByIDException();
+                                            worker_CV = Cv;
+                                        }
+                                        else throw new SystemCorruptionException();
+
+                                        Applier applier = new Applier() { worker = currentUser, Cv = worker_CV };
+
+
+                                        Globals.dataBase.AddApplierToEmployer(applier, Convert.ToInt32(ad_id));
+
+                                        Console.ForegroundColor = ConsoleColor.Green;
+                                        Console.WriteLine($"Successfully applied to ad with ID {ad.Id}");
+                                        Console.ResetColor();
+                                        Console.ReadKey();
+
+                                        Notification notification = new Notification() { Message = $"{currentUser.Name} with ID {currentUser.Id} has applied to your add with ID {ad_id}" };
+                                        Globals.dataBase.AddNotificationToEmployer(notification, Convert.ToInt32(ad_id));
+                                        FileHelper.SerializeDatabase(Globals.dataBase);
+                                    }
+                                    else
+                                    {
+                                        throw new NotFoundVacancyByIDException();
+                                    }
+                                }
+                                else
+                                {
+                                    throw new SystemCorruptionException();
+                                }
+
+                            }
+                            else if (user_option == "3")
+                            {
+                                //Show CVs
+                                currentUser.ShowCVs();
+                                Console.ReadKey();
+                            }
+                            else if (user_option == "4")
+                            {
+                                //Create new CV
+                                CV newCV = new CV();
+                                Console.WriteLine("Enter speciality : ");
+                                string speciality = Console.ReadLine();
+                                Console.WriteLine("Enter school : ");
+                                string school = Console.ReadLine();
+                                Console.WriteLine("Enter university score: ");
+                                string score = Console.ReadLine();
+
+                                while (true)
+                                {
+                                    Console.Clear();
+                                    Console.WriteLine("Enter language and proficiency level / Enter 0 if you done: ");
+                                    string language = Console.ReadLine();
+                                    if (language == "0") break;
+                                    newCV.AddLanguage(language);
+                                }
+                                while (true)
+                                {
+                                    Console.Clear();
+                                    Console.WriteLine("Enter companies you cooperated with / Enter 0 if you done: ");
+                                    string company = Console.ReadLine();
+                                    if (company == "0") break;
+                                    newCV.AddCompany(company);
+                                }
+
+                                while (true)
+                                {
+                                    Console.Clear();
+                                    Console.WriteLine("Enter skills / Enter 0 if you done: ");
+                                    string skill = Console.ReadLine();
+                                    if (skill == "0") break;
+                                    newCV.AddSkill(skill);
+                                }
+
+                                while (true)
+                                {
+                                    Console.Clear();
+                                    Console.WriteLine("Enter links / Enter 0 if you done: ");
+                                    string link = Console.ReadLine();
+                                    if (link == "0") break;
+                                    newCV.AddLink(link);
+                                }
+                                Console.Clear();
+                                Console.WriteLine("Enter start working day / month / year : ");
+                                string day = Console.ReadLine();
+                                string month = Console.ReadLine();
+                                string year = Console.ReadLine();
+
+                                Console.WriteLine("Enter end working day / month / year : ");
+                                string day1 = Console.ReadLine();
+                                string month1 = Console.ReadLine();
+                                string year1 = Console.ReadLine();
+
+                                DateTime dateTime_start = new DateTime(Convert.ToInt32(year), Convert.ToInt32(month), Convert.ToInt32(day));
+                                DateTime dateTime_end = new DateTime(Convert.ToInt32(year1), Convert.ToInt32(month1), Convert.ToInt32(day1));
+
+                                newCV.BeginDate = dateTime_start;
+                                newCV.EndDate = dateTime_end; newCV.School = school; newCV.UniScore = score; newCV.Speciality = speciality;
+                                currentUser.AddCV(newCV);
+                                Console.WriteLine();
+                                Console.ForegroundColor = ConsoleColor.Green; Console.WriteLine("CV has been successfully created !!!"); Console.ResetColor();
+                                Console.ReadKey();
+
+                                FileHelper.SerializeDatabase(Globals.dataBase);
+
+                            }
+                            else if (user_option == "5")
+                            {
+                                Console.Clear();
+                                currentUser.ShowNotifications();
+                                Console.ReadKey();
+                            }
+                            else if (user_option == "0")
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                throw new WrongInputException();
                             }
                         }
+
                         else
                         {
                             throw new UsernameOrPasswordWrong();
@@ -1163,7 +1068,9 @@ Requirements:
         {
             Controller controller = new Controller();
             controller.Initialize();
+
             FileHelper.SerializeDatabase(Globals.dataBase);
+
             while (true)
             {
                 try
@@ -1173,8 +1080,10 @@ Requirements:
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
+                    File.AppendAllText("error.log", $"Content: {ex.Message}\nDate: {DateTime.Now}\nSource:{ex.Source}\nAdditional Data:{ex.Data}\n===========================================\n");
                     Console.ReadKey();
                     Console.Clear();
+
                     continue;
                 }
             }

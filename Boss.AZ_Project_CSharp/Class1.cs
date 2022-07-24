@@ -14,7 +14,7 @@ namespace Boss.AZ_Project_CSharp
 
     public class SystemCorruptionException : ApplicationException
     {
-        public override string Message => $"System has been corrupted for a particular reason\nPlease start your operation again ...";
+        public override string Message => $"System has been corrupted for a particular reason - Please start your operation again ...";
     }
 
     public class UsernameOrPasswordWrong : ApplicationException
@@ -24,7 +24,7 @@ namespace Boss.AZ_Project_CSharp
 
     public class NotFoundByEnteredIDException : ApplicationException
     {
-        public override string Message => $"The data you are looking for with entered ID do not exist in this context\nTry Again...";
+        public override string Message => $"The data you are looking for with entered ID do not exist in this context - Try Again...";
     }
 
     public class NotFoundVacancyByIDException : ApplicationException
@@ -40,6 +40,11 @@ namespace Boss.AZ_Project_CSharp
     public class NotFoundApplierByIDException : ApplicationException
     {
         public override string Message => "The Applier with your input ID has not been found in our database !!!";
+    }
+
+    public class CVMustBeFulfilledException : ApplicationException
+    {
+        public override string Message => "Dear user, you currently do not have any CV, for bid you first need to create one !!!";
     }
     class Helper
     {
@@ -77,6 +82,92 @@ namespace Boss.AZ_Project_CSharp
                     Console.WriteLine(strings[i][k]);
                 }
                 Console.WriteLine();
+            }
+        }
+
+        public static void ShowFilterMenu()
+        {
+            Console.WriteLine("By City           1");
+            Console.WriteLine("By Salary         2");
+            Console.WriteLine("By Age            3");
+            Console.WriteLine("By Company        4");
+            Console.WriteLine("\nSkip Filtering    0");
+        }
+
+        public static void ShowVacancies(List<Vacancy> vacancies)
+        {
+            foreach (var vacancy in vacancies)
+            {
+                vacancy.ShowVacancy();
+            }
+        }
+
+        public static void FilterProcess()
+        {
+            var vacancies = Globals.dataBase.GetVacanciesList();
+            Helper.ShowFilterMenu();
+            string filter_choice = Console.ReadLine();
+
+            if (filter_choice == "1")
+            {
+                Console.WriteLine("Enter city name: ");
+                string city = Console.ReadLine();
+                var selectedVacancies = vacancies.Where(c => c.City.StartsWith(city)).ToList();
+                if (selectedVacancies.Count != 0)
+                {
+                    Console.Clear();
+                    Helper.ShowVacancies(selectedVacancies);
+                }
+                else { Console.WriteLine("We could not find any result specific to your search"); }
+            }
+            else if (filter_choice == "2")
+            {
+                Console.WriteLine("Enter minimum salary: ");
+                string min_salary = Console.ReadLine();
+                Console.WriteLine("Enter maximum salary: ");
+                string max_salary = Console.ReadLine();
+                var selectedVacancies = vacancies.Where(c => Convert.ToInt32(c.MinSalary) >= Convert.ToInt32(min_salary) && Convert.ToInt32(c.MaxSalary) <= Convert.ToInt32(max_salary));
+                Console.Clear();
+                if (selectedVacancies.ToList().Count != 0)
+                {
+                    Console.Clear();
+                    Helper.ShowVacancies(selectedVacancies.ToList());
+                }
+                else { Console.WriteLine("We could not find any result specific to your search"); }
+            }
+
+            else if (filter_choice == "3")
+            {
+                Console.WriteLine("Enter minimum age: ");
+                string min_age = Console.ReadLine();
+                Console.WriteLine("Enter maximum age: ");
+                string max_age = Console.ReadLine();
+                var selectedVacancies = vacancies.Where(c => Convert.ToInt32(c.MinAge) >= Convert.ToInt32(min_age) && Convert.ToInt32(c.MaxAge) <= Convert.ToInt32(max_age));
+                Console.Clear();
+                if (selectedVacancies.ToList().Count != 0)
+                {
+                    Console.Clear();
+                    Helper.ShowVacancies(selectedVacancies.ToList());
+                }
+                else { Console.WriteLine("We could not find any result specific to your search"); }
+            }
+
+            else if (filter_choice == "4")
+            {
+                Console.WriteLine("Enter company name: ");
+                string comp = Console.ReadLine();
+                var selectedVacancies = vacancies.Where(c => c.CompanyName.StartsWith(comp)).ToList();
+                if (selectedVacancies.Count != 0)
+                {
+                    Console.Clear();
+                    Helper.ShowVacancies(selectedVacancies);
+                }
+                else { Console.WriteLine("We could not find any result specific to your search"); }
+            }
+            else if(filter_choice == "0")
+            {
+                Console.Clear();
+                ShowVacancies(vacancies);
             }
         }
     }

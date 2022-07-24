@@ -1,0 +1,15 @@
+Content: Dear user, you currently do not have any CV, for bid you first need to create one !!!
+Date: 7/20/2022 9:32:24 PM
+Source:Boss.AZ_Project_CSharp
+Additional Data:System.Collections.ListDictionaryInternal
+===========================================
+Content: The Applier with your input ID has not been found in our database !!!
+Date: 7/20/2022 9:34:51 PM
+Source:Boss.AZ_Project_CSharp
+Additional Data:System.Collections.ListDictionaryInternal
+===========================================
+Content: Input string was not in a correct format.
+Date: 7/20/2022 9:35:07 PM
+Source:mscorlib
+Additional Data:System.Collections.ListDictionaryInternal
+===========================================

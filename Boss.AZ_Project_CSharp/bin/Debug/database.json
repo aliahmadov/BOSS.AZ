@@ -3,9 +3,63 @@
     {
       "Vacancies": [
         {
+          "Id": 2,
+          "BeginTime": "2022-07-20T21:29:12.7662739+04:00",
+          "ExpiredTime": "2022-08-20T21:29:12.7662739+04:00",
+          "Email": "johnAbruzzi@gmail.com",
+          "Phones": "050-984-84-74",
+          "Category": "Full stack Developer",
+          "Position": "Junier Developer",
+          "City": "Ganja",
+          "MinSalary": "1000",
+          "MaxSalary": "5500",
+          "MinAge": "20",
+          "MaxAge": "45",
+          "Education": "Bachelor, Master",
+          "ExperienceDuration": "3",
+          "Requirements": "\r\n\r\n    Managing the complete software development process from conception to deployment\r\n\r\n    Maintaining and upgrading the software following deployment\r\n\r\n    Managing the end-to-end life cycle for the production of software and applications\r\n\r\n    Overseeing and guiding the analyzing, writing, building, and deployment of software \r\n\r\n    Overseeing the automated testing and providing feedback to management during the development process \r\n\r\n    Modifying and testing changes to previously developed programs\r\n",
+          "AboutWork": "\r\n  Full Stack Developers are responsible for designing and developing websites and platforms. \r\nThey work with design teams to ensure that user interactions on web pages are intuitive and engaging.\r\nThey also provide back-end functionality that can run smoothly from any device or browser type commonly used today.\r\n\r\n",
+          "CompanyName": "Google",
+          "Appliers": []
+        },
+        {
+          "Id": 3,
+          "BeginTime": "2022-07-20T21:29:12.7662739+04:00",
+          "ExpiredTime": "2022-08-20T21:29:12.7662739+04:00",
+          "Email": "rafiq_ismayilov@gmail.com",
+          "Phones": "099-785-75-63",
+          "Category": "Accountant",
+          "Position": "Head Accountant",
+          "City": "Sumqayit",
+          "MinSalary": "3500",
+          "MaxSalary": "4254",
+          "MinAge": "25",
+          "MaxAge": "50",
+          "Education": "Bachelor, Master",
+          "ExperienceDuration": "5",
+          "Requirements": "\r\nTracking payments to internal and external stakeholders\r\n\r\nPreparing budget forecasts\r\n\r\nProcessing tax payments and returns\r\n",
+          "AboutWork": "\r\n  An Accountant helps businesses make critical financial decisions by collecting, tracking, and correcting the company's finances. \r\nThey are responsible for financial audits, reconciling bank statements, and \r\nensuring financial records are accurate throughout the year.\r\n",
+          "CompanyName": "Rafiq Holding",
+          "Appliers": []
+        }
+      ],
+      "VacancyCount": 2,
+      "Id": 4,
+      "Age": 25,
+      "Username": "admin1",
+      "Password": "admin1",
+      "Name": "Sara",
+      "Surname": "Tancredi",
+      "City": "Baku",
+      "Phone": "070-432-58-32",
+      "Notifications": []
+    },
+    {
+      "Vacancies": [
+        {
           "Id": 1,
-          "BeginTime": "2022-07-19T01:08:13.1767248+04:00",
-          "ExpiredTime": "2022-08-19T01:08:13.1767248+04:00",
+          "BeginTime": "2022-07-20T21:29:12.7632811+04:00",
+          "ExpiredTime": "2022-08-20T21:29:12.7642791+04:00",
           "Email": "aahmadov7626@ada.edu.az",
           "Phones": "050-311-11-11",
           "Category": "Front End Developer",
@@ -21,9 +75,29 @@
           "AboutWork": "\r\n    We are looking for an experienced Strategy Manager. You will work directly with C-suite level executives to ensure that daily objectives, reports, and metrics align directly with the company’s goals.\r\n\r\n    Evaluate new business models and corporate relationships.\r\n    Negotiate complex business models, partnerships, transactions, and other commercial agreements.\r\n    Identify and target attainable opportunities in the market.\r\n    Clearly define company goals and long-term strategy.\r\n    Examine the profitability of each product, store location, and line of business in order to redirect resources.\r\n    Utilize skills in project management to lead large teams in change processes.\r\n    Develop methods for motivating and inspiring stakeholders.\r\n    Leverage professional networks to attain critical resources.\r\n    Provide training materials for process owners who need support.\r\n\r\n",
           "CompanyName": "Game Developer X",
           "Appliers": []
+        },
+        {
+          "Id": 4,
+          "BeginTime": "2022-07-20T21:29:12.7662739+04:00",
+          "ExpiredTime": "2022-08-20T21:29:12.7662739+04:00",
+          "Email": "qurban_qurbanov@gmail.com",
+          "Phones": "077-568-12-78",
+          "Category": "Business Analyst",
+          "Position": "Team Manager",
+          "City": "Baku",
+          "MinSalary": "560",
+          "MaxSalary": "1250",
+          "MinAge": "25",
+          "MaxAge": "50",
+          "Education": "Bachelor, Master",
+          "ExperienceDuration": "3",
+          "Requirements": "\r\n\r\n    Creating a detailed business analysis, outlining problems, opportunities and solutions for a business\r\n    Budgeting and forecasting\r\n    Planning and monitoring\r\n    Financial modelling\r\n    Variance Analysis\r\n    Pricing\r\n    Reporting\r\n    Defining business requirements and reporting them back to stakeholders\r\n",
+          "AboutWork": "\r\n  Business Analysts conduct market analyses, analysing both product lines and the overall profitability of the business.\r\nIn addition, they develop and monitor data quality metrics and ensure business data and reporting needs are met.\r\nStrong technology, analytical and communication skills are must-have traits.\r\n\r\n",
+          "CompanyName": "Qurban MMC",
+          "Appliers": []
         }
       ],
-      "VacancyCount": 1,
+      "VacancyCount": 2,
       "Id": 3,
       "Age": 25,
       "Username": "admin",
@@ -35,13 +109,13 @@
       "Notifications": [
         {
           "Id": 1,
-          "Message": "John with ID 2 has applied to your add with ID 1",
-          "Time": "2022-07-19T01:08:40.5068855+04:00"
+          "Message": "Ali with ID 1 has applied to your add with ID 1",
+          "Time": "2022-07-20T21:32:16.5130909+04:00"
         },
         {
           "Id": 2,
-          "Message": "Ali with ID 1 has applied to your add with ID 1",
-          "Time": "2022-07-19T01:08:56.1663361+04:00"
+          "Message": "Michael with ID 2 has applied to your add with ID 1",
+          "Time": "2022-07-20T21:33:47.2740663+04:00"
         }
       ]
     }
@@ -69,9 +143,35 @@
           "Links": [
             "https://github.com/"
           ]
+        },
+        {
+          "Id": 3,
+          "Speciality": "Business Analyst",
+          "School": "289 School",
+          "UniScore": "645",
+          "Skills": [
+            "Data Mining",
+            "Financial recommendation"
+          ],
+          "Companies": [
+            "Amazon",
+            "Tesla"
+          ],
+          "BeginDate": "2018-05-10T00:00:00",
+          "EndDate": "2022-06-05T00:00:00",
+          "Languages": [
+            "Turkish - Professional",
+            "English - Intermediate",
+            "Azerbaijani - Native"
+          ],
+          "HasCertificate": false,
+          "Links": [
+            "facebook.com",
+            "linkedin.com"
+          ]
         }
       ],
-      "CvCount": 1,
+      "CvCount": 2,
       "Id": 1,
       "Age": 20,
       "Username": "user",
@@ -84,26 +184,50 @@
         {
           "Id": 9,
           "Message": "Good News - You have been accepted for advertisement with ID 1 by employer John !!!",
-          "Time": "2022-07-19T01:09:35.9534398+04:00"
+          "Time": "2022-07-20T21:35:06.619868+04:00"
         }
       ]
     },
     {
-      "CVs": [],
-      "CvCount": 0,
+      "CVs": [
+        {
+          "Id": 5,
+          "Speciality": "Programmer",
+          "School": "289 School",
+          "UniScore": "621",
+          "Skills": [
+            "C++",
+            "C#"
+          ],
+          "Companies": [
+            "Amazon",
+            "Alibaba"
+          ],
+          "BeginDate": "2015-05-10T00:00:00",
+          "EndDate": "2021-08-06T00:00:00",
+          "Languages": [
+            "English"
+          ],
+          "HasCertificate": false,
+          "Links": [
+            "github.com"
+          ]
+        }
+      ],
+      "CvCount": 1,
       "Id": 2,
       "Age": 20,
       "Username": "user1",
       "Password": "user1",
-      "Name": "John",
-      "Surname": "Wick",
+      "Name": "Michael",
+      "Surname": "Schofield",
       "City": "Sumqayit",
       "Phone": "070-310-23-11",
       "Notifications": [
         {
           "Id": 5,
           "Message": "Sad News - You have been rejected for advertisement with ID 1 by employer John !!!",
-          "Time": "2022-07-19T01:09:18.8904565+04:00"
+          "Time": "2022-07-20T21:34:38.4691704+04:00"
         }
       ]
     }
